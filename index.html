@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Oracle - Neural Mythology Wisdom</title>
+  <meta name="description" content="AI-powered mythology oracle combining ancient wisdom with neural interpretation">
+  
+  <!-- PWA Meta -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#d4af37">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
+      color: #f4e4c1;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #d4af37;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+      margin-bottom: 10px;
+      letter-spacing: 3px;
+    }
+
+    .subtitle {
+      color: #a89968;
+      font-size: 1.1rem;
+      font-style: italic;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: rgba(139, 69, 19, 0.4);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: #d4af37;
+    }
+
+    .intention-section {
+      margin: 40px 0;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(212, 175, 55, 0.3);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    label {
+      display: block;
+      color: #d4af37;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      border-radius: 10px;
+      color: #f4e4c1;
+      font-size: 1rem;
+      font-family: 'Georgia', serif;
+      margin-bottom: 20px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    }
+
+    input::placeholder {
+      color: rgba(212, 175, 55, 0.5);
+    }
+
+    .draw-btn {
+      width: 100%;
+      padding: 20px;
+      background: linear-gradient(135deg, #d4af37 0%, #8b6914 100%);
+      border: none;
+      border-radius: 12px;
+      color: #0a0a0a;
+      font-size: 1.4rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+    }
+
+    .draw-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.6);
+    }
+
+    .draw-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .card-reveal {
+      margin: 40px 0;
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(42, 16, 83, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+      border: 3px solid #d4af37;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);
+      display: none;
+    }
+
+    .card-reveal.active {
+      display: block;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-name {
+      font-size: 2.5rem;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    }
+
+    .mythology {
+      text-align: center;
+      color: #a89968;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+
+    .mythology-meaning {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 25px;
+      border-left: 4px solid #8b6914;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+
+    .mythology-meaning h3 {
+      color: #d4af37;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .neural-section {
+      background: linear-gradient(135deg, rgba(75, 0, 130, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+      padding: 30px;
+      border: 2px solid rgba(138, 43, 226, 0.5);
+      border-radius: 15px;
+      margin-top: 30px;
+    }
+
+    .neural-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .neural-header h3 {
+      color: #ba55d3;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    .ai-badge {
+      background: linear-gradient(135deg, #ba55d3 0%, #8a2be2 100%);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #ai-interpretation {
+      color: #e6d5ff;
+      line-height: 1.9;
+      font-size: 1.05rem;
+      white-space: pre-wrap;
+    }
+
+    #ai-interpretation.loading {
+      text-align: center;
+      color: #ba55d3;
+      font-style: italic;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(186, 85, 211, 0.3);
+      border-top-color: #ba55d3;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 60px;
+      border-top: 2px solid rgba(212, 175, 55, 0.3);
+      color: #8b6914;
+      font-size: 0.9rem;
+    }
+
+    .kypria {
+      color: #d4af37;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .card-name { font-size: 1.8rem; }
+      .draw-btn { font-size: 1.1rem; padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔱 Daily Oracle</h1>
+      <p class="subtitle">Ancient Wisdom • Neural Awakening</p>
+      <div class="badge">⚡ AI-Powered Mythology Readings</div>
+    </header>
+
+    <main>
+      <section class="intention-section">
+        <label for="user-question">🎯 State Your Intention</label>
+        <input 
+          type="text" 
+          id="user-question" 
+          placeholder="What guidance do you seek today?"
+          maxlength="200"
+        >
+        
+        <button class="draw-btn" id="draw-card-btn" onclick="drawCard()">
+          🔮 Draw Your Card
+        </button>
+      </section>
+
+      <div id="card-reveal" class="card-reveal">
+        <h2 class="card-name" id="card-name"></h2>
+        <p class="mythology" id="card-mythology"></p>
+        
+        <div class="mythology-meaning">
+          <h3>📜 Sacred Meaning</h3>
+          <p id="card-meaning"></p>
+        </div>
+
+        <div class="neural-section">
+          <div class="neural-header">
+            <h3>⚡ Neural Oracle</h3>
+            <span class="ai-badge">AI LAYER 1</span>
+          </div>
+          <p id="ai-interpretation">The Oracle channels divine wisdom...</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p class="kypria">🏛️ Kypria Technologies</p>
+      <p>Mythology • Mystery • Modern Prophecy</p>
+      <p style="margin-top: 15px; font-size: 0.85rem;">
+        <a href="privacy.html" style="color: #d4af37; text-decoration: none;">Privacy Policy</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // MYTHOLOGY CARD DECK (365 unique readings - sample 10 shown)
+    // ═══════════════════════════════════════════════════════════════
+    const mythologyDeck = [
+      {
+        name: "The Odyssey's Beginning",
+        mythology: "Greek • Odysseus",
+        meaning: "Every hero's journey starts with a single choice. Like Odysseus setting sail from Ithaca, you stand at the threshold of transformation. The seas ahead may be uncertain, but your courage is the compass that guides you. Trust in your ability to navigate unknown waters."
+      },
+      {
+        name: "Odin's Sacrifice",
+        mythology: "Norse • The All-Father",
+        meaning: "Wisdom requires sacrifice. Odin hung from Yggdrasil for nine days to gain knowledge of the runes. What are you willing to surrender for deeper understanding? Sometimes we must let go of comfort to gain truth. The question is not whether sacrifice is required, but what you value most."
+      },
+      {
+        name: "Ra's Journey",
+        mythology: "Egyptian • The Sun God",
+        meaning: "Each day brings renewal. Ra travels through the underworld each night, emerging victorious at dawn. Your current darkness is temporary—rebirth awaits. The cycle continues: challenge, transformation, triumph. You are in the midst of your own sacred journey through the night."
+      },
+      {
+        name: "The Morrígan's Choice",
+        mythology: "Celtic • Goddess of War",
+        meaning: "Sovereignty belongs to those who claim it. The Morrígan offers neither mercy nor cruelty—only truth. Your power lies in decisive action. The battlefield is yours to command, but hesitation invites defeat. Choose your path with the confidence of one who knows their strength."
+      },
+      {
+        name: "Prometheus' Fire",
+        mythology: "Greek • The Light-Bringer",
+        meaning: "Sometimes rebellion is service. Prometheus stole fire from the gods to elevate humanity. What sacred gift are you meant to share? Your act of defiance may be the spark that ignites transformation for others. The price of progress is often paid by those brave enough to challenge the status quo."
+      },
+      {
+        name: "Freya's Necklace",
+        mythology: "Norse • Goddess of Love",
+        meaning: "Beauty and power are inseparable. Freya traded nights to acquire Brísingamen, understanding that true treasures require genuine exchange. What are you negotiating for? Remember: you are both the prize and the purchaser in life's great bargains."
+      },
+      {
+        name: "Anubis' Scales",
+        mythology: "Egyptian • Guardian of the Dead",
+        meaning: "Truth weighs heavier than feathers. In the Hall of Ma'at, hearts are measured against truth. What would your heart reveal today? Justice is not punishment—it is balance. Alignment with truth brings peace; deception brings chaos. The scales do not lie."
+      },
+      {
+        name: "Cú Chulainn's Warp Spasm",
+        mythology: "Celtic • The Hound of Ulster",
+        meaning: "Sometimes we must become monstrous to protect what we love. Cú Chulainn transformed into a being of pure rage to defend his people. What beast stirs within you when those you cherish are threatened? Recognize your shadow—it is your fiercest guardian."
+      },
+      {
+        name: "Athena's Owl",
+        mythology: "Greek • Goddess of Wisdom",
+        meaning: "Wisdom flies at dusk. Athena's owl sees what daylight obscures. The answers you seek emerge not in frantic searching, but in patient observation. Wait for clarity. The truth will reveal itself when you stop forcing it into the light."
+      },
+      {
+        name: "The Norns' Tapestry",
+        mythology: "Norse • Weavers of Fate",
+        meaning: "Your thread is woven with countless others. The Norns—Urd, Verdandi, and Skuld—weave past, present, and future into a single tapestry. You are both pattern and weaver. Your choices shape the fabric of destiny for all who are connected to you."
+      }
+    ];
+
+    // ═══════════════════════════════════════════════════════════════
+    // AI LAYER 1: INTELLIGENT CARD INTERPRETATION
+    // ═══════════════════════════════════════════════════════════════
+    async function getAIInterpretation(cardName, cardMythology, cardMeaning, userContext) {
+      const aiElement = document.getElementById("ai-interpretation");
+      aiElement.className = "loading";
+      aiElement.innerHTML = '<span class="loading-spinner"></span>The Oracle channels divine wisdom...';
+
+      try {
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            // ⚠️ REPLACE WITH YOUR API KEY OR PROXY
+            // For security, use a serverless proxy (see implementation guide)
+            "x-api-key": "YOUR_ANTHROPIC_API_KEY_HERE",
+            "anthropic-version": "2023-06-01"
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 1000,
+            messages: [
+              {
+                role: "user",
+                content:
+                  `You are the Daily Oracle, a mystical guide speaking with ceremonial wisdom.\n\n` +
+                  `Card drawn: ${cardName}\n` +
+                  `Mythology: ${cardMythology}\n` +
+                  `Sacred meaning: ${cardMeaning}\n` +
+                  `Seeker's question: ${userContext || "General guidance for today"}\n\n` +
+                  `Provide a deeply personalized interpretation in 2–3 paragraphs that:\n` +
+                  `- Connects the mythological archetype to their specific situation\n` +
+                  `- Offers actionable wisdom, not vague platitudes\n` +
+                  `- Uses elevated but accessible language with mythic resonance\n` +
+                  `- Ends with a powerful question for reflection\n\n` +
+                  `Format as mystical prose, not bullet points. Speak directly to the seeker.`
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+        const interpretation = data.content[0].text;
+
+        aiElement.className = "";
+        aiElement.textContent = interpretation;
+
+        return interpretation;
+
+      } catch (err) {
+        console.error("AI interpretation error:", err);
+        aiElement.className = "";
+        aiElement.textContent = "The Oracle's vision is clouded. The neural pathway requires reconnection. Please try again in a moment, seeker.";
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // CORE CARD DRAW FUNCTION
+    // ═══════════════════════════════════════════════════════════════
+    async function drawCard() {
+      const btn = document.getElementById("draw-card-btn");
+      const userContext = document.getElementById("user-question").value.trim();
+      
+      // Disable button during draw
+      btn.disabled = true;
+      btn.textContent = "🔮 Drawing...";
+
+      // Random card selection
+      const card = mythologyDeck[Math.floor(Math.random() * mythologyDeck.length)];
+
+      // Display card
+      document.getElementById("card-name").textContent = card.name;
+      document.getElementById("card-mythology").textContent = card.mythology;
+      document.getElementById("card-meaning").textContent = card.meaning;
+
+      const cardReveal = document.getElementById("card-reveal");
+      cardReveal.classList.add("active");
+
+      // Scroll to card
+      cardReveal.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      // Call AI interpretation
+      await getAIInterpretation(
+        card.name,
+        card.mythology,
+        card.meaning,
+        userContext
+      );
+
+      // Re-enable button
+      btn.disabled = false;
+      btn.textContent = "🔮 Draw Another Card";
+    }
+
+    // Enable "Enter" key to draw card
+    document.getElementById("user-question").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        drawCard();
+      }
+    });
+  </script>
+</body>
+</html>
